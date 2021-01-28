@@ -1,8 +1,17 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import Item
+
 
 def home(request):
-    return HttpResponse('<h2>Welcome Home!</h2>')
+    return render(request, 'home.html')
 
 def about(request):
-    return HttpResponse('<h2>About Page</h2>')
+    return render(request, 'about.html')
+
+def items_index(request):
+    items = Item.objects.all()
+    return render(request, 'items/index.html', { 'items': items })
+
+def items_detail(request, item_id):
+    item = Item.objects.get(id=item_id)
+    return render(request, 'items/detail.html', { 'item': item })
