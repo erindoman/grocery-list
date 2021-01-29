@@ -8,6 +8,11 @@
     <span class="card-title">{{ item.name }}</span>
     <p>Cost: {{ item.cost }}</p>
     <p>Quantity: {{ item.quantity }}</p>
+  </div>
+  <div class="card-action">
+    <a href="{% url 'items_update' item.id %}">Edit</a>
+    <a href="{% url 'items_delete' item.id %}">Delete</a>
+  </div>
 </div>
 
 {% endblock %}
