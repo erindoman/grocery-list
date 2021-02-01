@@ -15,4 +15,37 @@
   </div>
 </div>
 
+<div class="card-content">
+  <div class="col s6">
+    <form action="{% url 'add_purchase' item.id %}" method="post">
+      {% csrf_token %}
+      {{ purchase_form.as_p }}
+      <input type="submit" class="btn" value="Add Purchase">
+    </form>
+    <table class="striped">
+      <thead>
+        <tr><th>Date</th><th>Quantity</th></tr>
+      </thead>
+      <tbody>
+        {% for purchase in item.purchase_set.all %}
+          <tr>
+            <td>{{purchase.date}}</td>
+            <td>{{purchase.quantity}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+var dateEl = document.getElementById('id_date');
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+</script>
+
 {% endblock %}
