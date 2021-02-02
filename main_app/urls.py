@@ -16,5 +16,5 @@ urlpatterns = [
     path('stores/<int:pk>/update/', views.StoreUpdate.as_view(), name='stores_update'),
     path('stores/<int:pk>/delete/', views.StoreDelete.as_view(), name='stores_delete'),
     path('items/<int:item_id>/assoc_store/<int:store_id>/', views.assoc_store, name='assoc_store'),
-
+    path('accounts/signup/', views.signup, name='signup'),
 ]
