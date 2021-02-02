@@ -38,6 +38,49 @@
   </div>
 </div>
 
+  <hr>
+  <div class="row">
+    <div class="col s6">
+      <h3>{{ item.name }} is available at:</h3>
+      {% if item.stores.count %}
+        {% for store in item.stores.all %}
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                {{ store.name }} in {{ store.location }}
+              </span>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h5>{{ item.name }} is not available at any stores.</h5>
+      {% endif %}
+    </div>
+    <div class="col s6">
+      <h3>Available Stores</h3>
+      {% if stores.count %}
+        {% for store in stores.all %}
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                {{ store.name }} in {{ store.location }}
+              </span>
+            </div>
+            <div class="card-action">
+              <form action="{% url 'assoc_store' item.id store.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn">Add</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h5>{{item.name}} is in stores everywhere!</h5>
+      {% endif %}
+    </div>
+  </div>
+
+
 <script>
 var dateEl = document.getElementById('id_date');
   M.Datepicker.init(dateEl, {

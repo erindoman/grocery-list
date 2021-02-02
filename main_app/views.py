@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Item
+from django.views.generic import ListView, DetailView
+from .models import Item, Store
 from .forms import PurchaseForm
 
 def home(request):
@@ -15,8 +16,9 @@ def items_index(request):
 
 def items_detail(request, item_id):
     item = Item.objects.get(id=item_id)
+    stores_item_doesnt_have = Store.objects.exclude(id__in= item.stores.all().values_list('id'))
     purchase_form = PurchaseForm()
-    return render(request, 'items/detail.html', { 'item': item, 'purchase_form': purchase_form })
+    return render(request, 'items/detail.html', { 'item': item, 'purchase_form': purchase_form, 'stores': stores_item_doesnt_have })
 
 def add_purchase(request, item_id):
     form = PurchaseForm(request.POST)
@@ -37,3 +39,25 @@ class ItemUpdate(UpdateView):
 class ItemDelete(DeleteView):
     model = Item
     success_url = '/items/'
+
+class StoreList(ListView):
+  model = Store
+
+class StoreDetail(DetailView):
+  model = Store
+
+class StoreCreate(CreateView):
+  model = Store
+  fields = '__all__'
+
+class StoreUpdate(UpdateView):
+  model = Store
+  fields = ['name', 'location']
+
+class StoreDelete(DeleteView):
+  model = Store
+  success_url = '/stores/'
+
+def assoc_store(request, item_id, store_id):
+    Item.objects.get(id=item_id).stores.add(store_id)
+    return redirect('detail', item_id=item_id)
